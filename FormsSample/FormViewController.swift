@@ -44,32 +44,29 @@ extension Hotspot {
     }
 }
 
-let showPreviewForm: Form<Hotspot> =
-    sections([
-        section(
-            ShowPreview.all.map { option in
-                optionCell(title: option.text, option: option, keyPath: \.showPreview)
-            }
-        )
-    ])
+let showPreviewForm: Form<Hotspot> = [
+    .section(
+        ShowPreview.all.map { option in
+            .optionCell(title: option.text, option: option, keyPath: \.showPreview)
+        }
+    )
+]
 
-let settingsForm: Form<Settings> =
-    sections([
-        section([
-            detailTextCell(title: "Personal Hotspot", keyPath: \Settings.hotspotEnabled, form: bind(form: hotspotForm, to: \.hotspot))
-        ])
+let settingsForm: Form<Settings> = [
+    .section([
+        .detailTextCell(title: "Personal Hotspot", keyPath: \.hotspotEnabled, form: hotspotForm.pullback(keyPath: \.hotspot))
     ])
+]
 
-let hotspotForm: Form<Hotspot> =
-    sections([
-        section([
-            controlCell(title: "Personal Hotspot", control: uiSwitch(keyPath: \.isEnabled))
-        ], footer: \.enabledSectionTitle),
-        section([
-            detailTextCell(title: "Notification", keyPath: \.showPreview.text, form: showPreviewForm)
-        ]),
-        section([
-            nestedTextField(title: "Password", keyPath: \.password),
-            nestedTextField(title: "Network Name", keyPath: \.networkName)
-        ])
+let hotspotForm: Form<Hotspot> = [
+    .section([
+        .controlCell(title: "Personal Hotspot", control: .uiSwitch(keyPath: \.isEnabled))
+    ], footer: \.enabledSectionTitle),
+    .section([
+        .detailTextCell(title: "Notification", keyPath: \.showPreview.text, form: showPreviewForm)
+    ]),
+    .section([
+        .nestedTextField(title: "Password", keyPath: \.password),
+        .nestedTextField(title: "Network Name", keyPath: \.networkName)
     ])
+]
